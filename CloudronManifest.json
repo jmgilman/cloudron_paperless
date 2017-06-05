@@ -1,0 +1,26 @@
+{
+  "id": "io.cloudron.paperless",
+  "title": "Paperless",
+  "author": "Daniel Quinn",
+  "description": "file://DESCRIPTION.md",
+  "changelog": "file://CHANGELOG",
+  "tagline": "Scan, index, and archive all of your paper documents",
+  "version": "0.1.0",
+  "healthCheckPath": "/",
+  "httpPort": 8000,
+  "addons": {
+    "localstorage": {}
+  },
+  "manifestVersion": 1,
+  "website": "https://github.com/danielquinn/paperless",
+  "contactEmail": "joshuagilman@gmail.com",
+  "icon": "file://logo.png",
+  "tags": [
+    "documents",
+    "OCR"
+  ],
+  "mediaLinks": [ 
+    "https://github.com/danielquinn/paperless/blob/master/docs/_static/screenshot.png"
+  ],
+  "postInstallMessage": "file://POSTINSTALL.md"
+}

@@ -1,0 +1,1 @@
+Paperless is a simple Django application running in two parts: a consumer (the thing that does the indexing) and the webserver (the part that lets you search & download already-indexed documents). If you want to learn more about its functions keep on reading after the installation section.
