@@ -25,6 +25,7 @@ var by = require('selenium-webdriver').By,
     Builder = require('selenium-webdriver').Builder;
 
 var sleep = require('sleep');
+var nodemailer = require('nodemailer');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -123,8 +124,44 @@ describe('Application life cycle test', function () {
             });
     }
 
+    function emailFile(done) {
+        if (!process.env.SMTP_HOST) return done(new Error('SMTP_HOST env var not set - cannot test email functionality'));
+        if (!process.env.SMTP_PORT) return done(new Error('SMTP_PORT env var not set - cannot test email functionality'));
+        if (!process.env.SMTP_USER) return done(new Error('SMTP_USER env var not set - cannot test email functionality'));
+        if (!process.env.SMTP_PASS) return done(new Error('SMTP_PASS env var not set - cannot test email functionality'));
+        if (!process.env.SMTP_FROM) return done(new Error('SMTP_FROM env var not set - cannot test email functionality'));
 
-    it('can build app', function () {
+        var transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: process.env.SMTP_PORT,
+            secure: false, // secure:true for port 465, secure:false for port 587
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS
+            }
+        });
+
+        let mailOptions = {
+            from: '"Cloudron Test" <' + process.env.SMTP_FROM + '>',
+            to: app.location + '.app@gilman.services', // list of receivers
+            subject: 'cloudron - pdf-sample', // Subject line
+            text: 'cloudron123',
+            attachments: [
+                {
+                    filename: 'pdf-sample.pdf',
+                    path: 'pdf-sample.pdf'
+                }
+            ]
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            expect(error).to.be(null);
+            done();
+        });
+    }
+
+
+    xit('can build app', function () {
         execSync('cloudron build', { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
     });
 
@@ -155,9 +192,19 @@ describe('Application life cycle test', function () {
 
     it('can delete uploaded file', deleteUpload)
 
+    it('can email sample PDF', emailFile);
+
+    it('restart app', function() {
+        execSync('cloudron restart --app ' + app.id);
+    });
+
+    it('can see uploaded file', seeUpload);
+
+    it('can delete uploaded file', deleteUpload)
+
     it('can POST sample PDF', postFile)
 
-    it('can restart app', function () {
+    it('restart app', function () {
         execSync('cloudron restart --app ' + app.id);
     });
 
@@ -175,7 +222,7 @@ describe('Application life cycle test', function () {
 
     it('can delete uploaded file', deleteUpload)
 
-    it('can uninstall app', function () {
+    it('uninstall app', function () {
         execSync('cloudron uninstall --app ' + app.id, { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
     });
 })

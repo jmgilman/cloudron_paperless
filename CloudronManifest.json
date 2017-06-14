@@ -9,7 +9,8 @@
   "healthCheckPath": "/",
   "httpPort": 8000,
   "addons": {
-    "localstorage": {}
+    "localstorage": {},
+    "recvmail": {}
   },
   "manifestVersion": 1,
   "website": "https://github.com/danielquinn/paperless",

@@ -11,6 +11,12 @@ if ! [ -f /app/data/.initialized ]; then
   # Move config
   cp /app/code/paperless.default.conf /app/data/paperless/paperless.conf
 
+  # Setup email support
+  sed -i "s/%PAPERLESS_CONSUME_MAIL_HOST%/${MAIL_IMAP_SERVER}/g" /app/data/paperless/paperless.conf
+  sed -i "s/%PAPERLESS_CONSUME_MAIL_PORT%/${MAIL_IMAP_PORT}/g" /app/data/paperless/paperless.conf
+  sed -i "s/%PAPERLESS_CONSUME_MAIL_USER%/${MAIL_IMAP_USERNAME}/g" /app/data/paperless/paperless.conf
+  sed -i "s/%PAPERLESS_CONSUME_MAIL_PASS%/${MAIL_IMAP_PASSWORD}/g" /app/data/paperless/paperless.conf
+
   # Mark as keep
   touch /app/data/paperless/data/.keep
   touch /app/data/paperless/media/documents/originals/.keep
