@@ -10,7 +10,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Clone and install paperless
-ENV PAPERLESS_COMMIT 02e0543a022ab9a02aa792a5ea00bd83592c6b52
+ENV PAPERLESS_COMMIT 6f635c74fc9ad6a14725fabf24446e8b24dd90af
 RUN mkdir -p /app/code/paperless \
     && git clone https://github.com/danielquinn/paperless.git /app/code/paperless \
     && (cd /app/code/paperless && git checkout -q $PAPERLESS_COMMIT) \
@@ -26,6 +26,7 @@ RUN rm -rf /app/code/paperless/media/documents/thumbnails
 RUN ln -s /app/data/paperless/data /app/code/paperless/data
 RUN ln -s /app/data/paperless/media/documents/originals /app/code/paperless/media/documents/originals
 RUN ln -s /app/data/paperless/media/documents/thumbnails /app/code/paperless/media/documents/thumbnails
+RUN ln -s /app/data/paperless/paperless.conf /etc/paperless.conf
 
 # Set working directory
 WORKDIR /tmp
@@ -34,11 +35,13 @@ WORKDIR /tmp
 ADD start.sh /app/code/start.sh
 
 # Add config
-ADD paperless.conf /etc/paperless.conf
+ADD paperless.default.conf /app/code/paperless.default.conf
+
+# Add default user (admin/cloudron)
+ADD user.db.json /app/code/user.db.json
 
 # Set permissions
 RUN chown -Rh cloudron:cloudron /app/code/paperless
-RUN chown cloudron:cloudron /etc/paperless.conf
 
 # Set entry command to start script
 CMD [ "/bin/bash", "/app/code/start.sh" ]

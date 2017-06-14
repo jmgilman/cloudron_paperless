@@ -8,6 +8,9 @@ if ! [ -f /app/data/.initialized ]; then
   mkdir -p /app/data/paperless/media/documents/originals
   mkdir -p /app/data/paperless/media/documents/thumbnails
 
+  # Move config
+  cp /app/code/paperless.default.conf /app/data/paperless/paperless.conf
+
   # Mark as keep
   touch /app/data/paperless/data/.keep
   touch /app/data/paperless/media/documents/originals/.keep
@@ -15,6 +18,9 @@ if ! [ -f /app/data/.initialized ]; then
 
   # Migrate the database
   /app/code/paperless/src/manage.py migrate
+
+  # Add the default user
+  /app/code/paperless/src/manage.py loaddata /app/code/user.db.json
 
   # Set permissions
   chown -Rh cloudron:cloudron /app/data/paperless
@@ -30,7 +36,7 @@ if ! [ -e /app/data/.passphrase ]; then
 fi
 
 export PAPERLESS_PASSPHRASE=$(cat /app/data/.passphrase)
-export PAPERLESS_SHARED_SECRET=$(cat /app/data/.passphrase)
+export PAPERLESS_SECRET_KEY=$(cat /app/data/.passphrase)
 export PAPERLESS_SCRATCH_DIR="/app/data/paperless/tmp"
 
 exec sudo -HEu cloudron "/app/code/paperless/src/manage.py" "document_consumer" &

@@ -22,5 +22,6 @@
   "mediaLinks": [ 
     "https://github.com/danielquinn/paperless/blob/master/docs/_static/screenshot.png"
   ],
-  "postInstallMessage": "file://POSTINSTALL.md"
+  "postInstallMessage": "file://POSTINSTALL.md",
+  "memoryLimit": 1073741824
 }
