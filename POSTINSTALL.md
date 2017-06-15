@@ -10,6 +10,8 @@ There are three ways to upload files to Paperless:
 
 * Push the file to the consume folder using the Cloudron CLI tool: `cloudron push my-pdf.pdf /app/data/paperless/consume/my-pdf.pdf`
 * POST the file to the consume folder: [see here](https://paperless.readthedocs.io/en/latest/consumption.html#http-post) for examples
-* Email the file to {App Location}.app@{Your domain}. The subject is the same format as file names (see below), only attach **one** file to the email, and in the body of the email you'll need to **include your shared secret**. This is by default set to `cloudron123`, however it's highly recommended you edit `/app/data/paperless/paperless.conf` and change `PAPERLESS_SHARED_SECRET` to something unique.
+* Email the file to {App subdomain}.app@{Your domain}. The subject is the same format as file names (see below), only attach **one** file to the email, and in the body of the email you'll need to **include your shared secret**. This is by default set to `cloudron123`, however it's highly recommended you edit `/app/data/paperless/paperless.conf` and change `PAPERLESS_SHARED_SECRET` to something unique.
 
 File names determine how Paperless processes uploaded files, please [see here](https://paperless.readthedocs.io/en/latest/guesswork.html#file-naming) for more details.
+
+You can access the API by navigating to the following: `http://app.mysite.com/api` The API is self-describing, so you can navigate around and see what's available. Of interest might be the OCR output for uploaded files - by navigating to the documents API you can get plain-text translations of uploaded files. 

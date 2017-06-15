@@ -143,7 +143,7 @@ describe('Application life cycle test', function () {
 
         let mailOptions = {
             from: '"Cloudron Test" <' + process.env.SMTP_FROM + '>',
-            to: app.location + '.app@gilman.services', // list of receivers
+            to: app.location + '.app@' + app.fqdn, // list of receivers
             subject: 'cloudron - pdf-sample', // Subject line
             text: 'cloudron123',
             attachments: [
